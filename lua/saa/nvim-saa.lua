@@ -55,7 +55,9 @@ local function open_window()
 end
 
 local function update_view()
-    print("update view...")
+    local result = vim.fn.system("[ -w /workspace/perso/startpage.crx ] && echo 'oui' || echo 'non'")
+    result = result:gsub("%s+", " ")
+    api.nvim_buf_set_lines(buf, 0, -1, false, {result})
 end
 
 local function close_window()
