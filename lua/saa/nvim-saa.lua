@@ -1,7 +1,8 @@
 local api = vim.api
 local buf, win
 local filepath
-local filebuf 
+local filebuf
+local filewin
 
 local function open_window()
     buf = api.nvim_create_buf(false, true) -- create new empty buffer
@@ -64,6 +65,12 @@ local function close_window()
     api.nvim_win_close(win, true)
 end
 
+local function update_buf()
+    api.nvim_set_current_win(filewin)
+    vim.cmd("e!")
+    --api.nvim_win_close(filewin, true)
+end
+
 local function sudo_write()
     local password = vim.fn.inputsecret("Password: ")
 
@@ -81,7 +88,6 @@ local function sudo_write()
 
     local cmd = string.format("dd if=%s of=%s bs=1048576", vim.fn.shellescape(tmpfile), vim.fn.shellescape(filepath))
     vim.fn.writefile(filebuf, tmpfile)
-    --api.nvim_exec(string.format("write! %s", tmpfile), true)
     
     local out = vim.fn.system(string.format("sudo -p '' -S %s", cmd), password)
 
@@ -92,7 +98,6 @@ local function sudo_write()
     end
 
     print(string.format('\r\n"%s" written', filepath))
-    --vim.cmd("e!")
     vim.fn.delete(tmpfile)
     return true
 end
@@ -104,6 +109,7 @@ local function save_as_admin()
         print("An error occured !")
     end
     close_window()
+    update_buf()
 end
 
 local function check_root_needed()
@@ -150,6 +156,7 @@ end
 local function saa()
     filepath = vim.fn.expand("%:p")
     filebuf = api.nvim_buf_get_lines(api.nvim_win_get_buf(0), 0, -1, true)
+    filewin = vim.fn.win_getid()
 
     if check_root_needed() ~= true then
         return
@@ -158,7 +165,6 @@ local function saa()
     open_window()
     set_mappings()
     update_view()
-    -- api.nvim_win_set_cursor(win, {4, 0})
 end
 
 return {
