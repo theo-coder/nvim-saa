@@ -1,4 +1,5 @@
 local saa = require("saa.nvim-saa").saa
+local saaq = require("saa.nvim-saa").saaq
 local update_view = require("saa.nvim-saa").update_view
 local close_window = require("saa.nvim-saa").close_window
 local save_as_admin = require("saa.nvim-saa").save_as_admin
@@ -7,6 +8,7 @@ local setup = require("saa.nvim-saa").setup
 
 return {
     saa = saa,
+    saaq = saaq,
     update_view = update_view,
     close_window = close_window,
     save_as_admin = save_as_admin,

@@ -196,6 +196,11 @@ local function saa()
 	update_view()
 end
 
+local function saaq()
+    saa()
+    vim.cmd[[ q ]]
+end
+
 local function setup()
 	vim.cmd([[
        let s:IgnoreChange=0
@@ -214,11 +219,13 @@ local function setup()
                 \ endif
        augroup end
         command! Saa execute 'lua require("saa").saa()'
+        command! SaaQ execute 'lua require("saa").saaq()'
     ]])
 end
 
 return {
 	saa = saa,
+    saaq = saaq,
 	update_view = update_view,
 	close_window = close_window,
 	save_as_admin = save_as_admin,
