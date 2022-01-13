@@ -192,7 +192,9 @@ local function saa()
     filewin = vim.fn.win_getid()
 
     if check_root_needed() ~= true then
-        vim.cmd[[ q ]]
+        if quitafter then
+            vim.cmd[[ q ]]
+        end
         return
     end
 
