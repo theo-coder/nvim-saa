@@ -197,7 +197,17 @@ local function saa()
 end
 
 local function saaq()
-    saa()
+	filepath = vim.fn.expand("%:p")
+	filebuf = api.nvim_buf_get_lines(api.nvim_win_get_buf(0), 0, -1, true)
+	filewin = vim.fn.win_getid()
+
+	if check_root_needed() ~= true then
+		return
+	end
+
+	open_window()
+	set_mappings()
+	update_view()
     vim.cmd[[ q ]]
 end
 
