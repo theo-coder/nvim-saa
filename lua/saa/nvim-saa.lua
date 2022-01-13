@@ -123,7 +123,9 @@ local function check_root_needed()
 	result = result:gsub("%s+", "")
 
 	if result == "yes" then
-		print("No root needed !")
+        vim.cmd [[ 
+            write
+        ]]
 		return false
 	end
 
