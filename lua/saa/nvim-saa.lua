@@ -195,7 +195,7 @@ local function saa()
 end
 
 local function setup()
-	vim.cmd [[
+	vim.cmd([[
        let s:IgnoreChange=0
        augroup _nvim-saa
             autocmd!
@@ -211,7 +211,8 @@ local function setup()
                 \   let v:fcs_choice="ask" |
                 \ endif
        augroup end
-    ]]
+        command! Saa execute 'lua require("saa").saa()'
+    ]])
 end
 
 return {
@@ -220,5 +221,5 @@ return {
 	close_window = close_window,
 	save_as_admin = save_as_admin,
 	check_root_needed = check_root_needed,
-    setup = setup
+	setup = setup,
 }
