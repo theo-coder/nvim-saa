@@ -136,17 +136,17 @@ local function check_root_needed()
             ]]
             return false
         end
-    end
+    else
+        local filedir = filepath:match("(.*/)")
+        local dirwrite = vim.fn.system("[ -w " .. filedir .."] && echo 'yes' || echo 'no'")
+        dirwrite = dirwrite:gsub("%s+", "")
 
-    local filedir = filepath:match("(.*/)")
-    local dirwrite = vim.fn.system("[ -w " .. filedir .."] && echo 'yes' || echo 'no'")
-    dirwrite = dirwrite:gsub("%s+", "")
-
-    if dirwrite == "yes" then
-        vim.cmd [[
-        write
-        ]]
-        return false
+        if dirwrite == "yes" then
+            vim.cmd [[
+            write
+            ]]
+            return false
+        end
     end
 
     return true
