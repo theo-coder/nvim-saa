@@ -123,11 +123,27 @@ local function save_as_admin()
 end
 
 local function check_root_needed()
-    local result = vim.fn.system("[ -w " .. filepath .. " ] && echo 'yes' || echo 'no'")
-    result = result:gsub("%s+", "")
+    local fileexists = vim.fn.system("[ -f " .. filepath .." ] && echo 'yes' || echo 'no'")
+    fileexists = fileexists:gsub("%s+", "")
 
-    if result == "yes" then
-        vim.cmd [[ 
+    if fileexists == "yes" then
+        local filewrite = vim.fn.system("[ -w " .. filepath .. " ] && echo 'yes' || echo 'no'")
+        filewrite = filewrite:gsub("%s+", "")
+
+        if filewrite == "yes" then
+            vim.cmd [[ 
+            write
+            ]]
+            return false
+        end
+    end
+
+    local filedir = filepath:match("(.*/)")
+    local dirwrite = vim.fn.system("[ -w " .. filedir .."] && echo 'yes' || echo 'no'")
+    dirwrite = dirwrite:gsub("%s+", "")
+
+    if dirwrite == "yes" then
+        vim.cmd [[
         write
         ]]
         return false
